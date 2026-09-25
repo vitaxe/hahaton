@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Платформа Спортивного Программирования — Чувашия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .block-scratch { user-select: none; transition: transform 0.15s, box-shadow 0.15s; }
+        .block-scratch:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER / NAV -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-base sm:text-lg leading-tight">КодЧувашия.Спорт</h1>
+                    <p class="text-xs text-slate-500 hidden sm:block">Образовательная платформа 1–9 классов</p>
+                </div>
+            </div>
+
+            <!-- Role Selector Controls -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider hidden md:inline">Контур:</span>
+                <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200">
+                    <button onclick="switchRole('student')" id="role-btn-student" class="role-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1.5 bg-white text-blue-700 shadow-sm">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>Ученик</span>
+                    </button>
+                    <button onclick="switchRole('mentor')" id="role-btn-mentor" class="role-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <span>Куратор</span>
+                        <span id="mentor-pending-badge" class="ml-1 bg-amber-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">2</span>
+                    </button>
+                    <button onclick="switchRole('admin')" id="role-btn-admin" class="role-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Администратор</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= STUDENT ROLE CONTENT ================= -->
+        <div id="view-student" class="role-view space-y-6">
+            <!-- Top Banner -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute right-0 top-0 bottom-0 opacity-10 flex items-center pr-10 text-9xl">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Ученик: Максим Иванов (5 класс)
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Основы Спортивного Программирования</h2>
+                    <p class="text-blue-100 text-sm mb-4">Интерактивный курс по блочному коду, логике Minecraft и базовым алгоритмам Python.</p>
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
+                        <div class="bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                            <span class="text-blue-200">Пройдено шагов:</span> <strong id="student-progress-count">4 / 8</strong>
+                        </div>
+                        <div class="bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                            <span class="text-blue-200">Ваш рейтинг:</span> <strong id="student-score-total" class="text-amber-300">280 баллов</strong>
+                        </div>
+                        <button onclick="toggleRatingModal()" class="text-xs underline text-blue-200 hover:text-white transition">
+                            <i class="fa-solid fa-circle-info"></i> Из чего состоит рейтинг?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Course View -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Course Steps Navigation Sidebar -->
+                <div class="lg:col-span-1 bg-white rounded-2xl border border-slate-200 p-4 shadow-sm h-fit">
+                    <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-3 flex items-center justify-between">
+                        <span>Содержание курса</span>
+                        <span class="text-xs font-normal text-slate-500">1 модуль</span>
+                    </h3>
+                    <div class="space-y-1.5" id="steps-list-container">
+                        <!-- Step items loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Active Step Interactive Area -->
+                <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between min-h-[550px]" id="step-active-card">
+                    <!-- Step Header -->
+                    <div id="step-content-area" class="space-y-6">
+                        <!-- Step specific content loaded here dynamically -->
+                    </div>
+
+                    <!-- Step Footer Controls -->
+                    <div class="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
+                        <button id="btn-prev-step" onclick="navigateStep(-1)" class="px-4 py-2 rounded-xl text-sm font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-arrow-left mr-1.5"></i> Назад
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <span id="step-status-badge" class="text-xs px-3 py-1 rounded-full bg-slate-100 font-semibold text-slate-600">
+                                Не выполнено
+                            </span>
+                            <button id="btn-next-step" onclick="navigateStep(1)" class="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-200 transition">
+                                Далее <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Submissions & Mentor Comments Section -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> История ответов и связь с куратором
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold uppercase text-xs">
+                            <tr>
+                                <th class="p-3 rounded-l-lg">Шаг</th>
+                                <th class="p-3">Тип проверки</th>
+                                <th class="p-3">Отправлено</th>
+                                <th class="p-3">Статус</th>
+                                <th class="p-3 rounded-r-lg">Комментарий куратора</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-submissions-table" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= MENTOR / CURATOR ROLE CONTENT ================= -->
+        <div id="view-mentor" class="role-view hidden space-y-6">
+            <!-- Mentor Header & Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900">12</div>
+                        <div class="text-xs text-slate-500 font-medium">Закрепленных учеников</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900" id="mentor-pending-count">2</div>
+                        <div class="text-xs text-slate-500 font-medium">Работ на проверке</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-rose-600">2</div>
+                        <div class="text-xs text-slate-500 font-medium">Риск отставания (Индикатор)</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900">84%</div>
+                        <div class="text-xs text-slate-500 font-medium">Успешность группы</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mentor Workflow Tabs -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex border-b border-slate-200 gap-6 mb-6">
+                    <button onclick="switchMentorTab('queue')" id="mtab-btn-queue" class="pb-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> Очередь ручной проверки
+                        <span id="queue-count-badge" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">2</span>
+                    </button>
+                    <button onclick="switchMentorTab('students')" id="mtab-btn-students" class="pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line"></i> Ученики и раннее предупреждение
+                    </button>
+                    <button onclick="switchMentorTab('questions')" id="mtab-btn-questions" class="pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-comments"></i> Вопросы по шагам (3)
+                    </button>
+                </div>
+
+                <!-- Tab 1: Queue of Manual Submissions -->
+                <div id="mtab-queue" class="space-y-4">
+                    <h4 class="font-bold text-slate-900 text-sm">Работы, требующие вашей проверки:</h4>
+                    <div class="space-y-4" id="mentor-queue-list">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Students List & Early Warning Alert System -->
+                <div id="mtab-students" class="hidden space-y-4">
+                    <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-start gap-3 mb-4">
+                        <i class="fa-solid fa-triangle-exclamation text-base mt-0.5 text-rose-600"></i>
+                        <div>
+                            <strong>Система раннего предупреждения:</strong> Платформа подсвечивает учеников, которые не заходили более 3 дней, имеют 3+ неудачных попыток подряд или застопорились на одном шаге. Вы можете связаться с ними до того, как они бросят обучение.
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold uppercase text-xs">
+                                <tr>
+                                    <th class="p-3 rounded-l-lg">Ученик</th>
+                                    <th class="p-3">Класс</th>
+                                    <th class="p-3">Текущий шаг</th>
+                                    <th class="p-3">Прогресс</th>
+                                    <th class="p-3">Рейтинг</th>
+                                    <th class="p-3">Статус / Предупреждение</th>
+                                    <th class="p-3 rounded-r-lg">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100" id="mentor-students-table">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Steps Q&A -->
+                <div id="mtab-questions" class="hidden space-y-4">
+                    <div class="space-y-3" id="mentor-qa-list">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= ADMINISTRATOR ROLE CONTENT ================= -->
+        <div id="view-admin" class="role-view hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Панель Администратора Курсов</h2>
+                    <p class="text-xs text-slate-500">Конструктор курсов из расширяемых типов шагов, назначение кураторов</p>
+                </div>
+                <button onclick="createNewStepModal()" class="px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-xl hover:bg-blue-700 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Добавить новый шаг в курс
+                </button>
+            </div>
+
+            <!-- Course Builder & Structure -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Course Overview & Step Manager -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b pb-4 border-slate-100">
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Опубликован</span>
+                            <h3 class="font-bold text-lg text-slate-900 mt-1">Основы Спортивного Программирования</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400">Версия модуля</span>
+                            <div class="text-sm font-mono font-bold text-slate-700">v2.4 (2026)</div>
+                        </div>
+                    </div>
+
+                    <h4 class="font-semibold text-xs text-slate-500 uppercase tracking-wider">Структура и типы шагов (Расширяемая архитектура):</h4>
+                    
+                    <div class="space-y-2" id="admin-steps-list">
+                        <!-- Step items for editor -->
+                    </div>
+                </div>
+
+                <!-- Curator & Student Assignment Panel -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-user-gear text-blue-600"></i> Назначение кураторов
+                    </h3>
+                    <p class="text-xs text-slate-500">Закрепите ответственных преподавателей за школьниками</p>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+                            <div class="font-bold text-slate-800">Куратор: Анна Сергеевна Петрова</div>
+                            <div class="text-slate-500">Закреплено учеников: <strong>12</strong></div>
+                            <div class="flex items-center gap-1">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-semibold">Школы №5, №12</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+                            <div class="font-bold text-slate-800">Куратор: Алексей Николаевич Волков</div>
+                            <div class="text-slate-500">Закреплено учеников: <strong>15</strong></div>
+                            <div class="flex items-center gap-1">
+                                <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded text-[10px] font-semibold">Лицей №2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="alert('Форма назначения кураторов открыта!')" class="w-full py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 transition">
+                        + Закрепить нового куратора
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL: Rating Explanation -->
+    <div id="modal-rating" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b pb-3 border-slate-100">
+                <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-500"></i> Расчет рейтинга ученика
+                </h3>
+                <button onclick="toggleRatingModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Рейтинг формируется прозрачно и объяснимо. Каждое правильно выполненное задание приносит баллы в зависимости от типа и сложности:
+            </p>
+
+            <div class="space-y-2 text-xs" id="rating-breakdown-list">
+                <!-- Dynamically generated breakdown -->
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex justify-end">
+                <button onclick="toggleRatingModal()" class="px-4 py-2 bg-slate-900 text-white rounded-xl font-semibold text-xs">
+                    Понятно
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+            Кейсодержатель — Федерация спортивного программирования Чувашской Республики (Хакатон 2026).
+        </div>
+    </footer>
+
+    <script>
+        /* ================= LMS DATA STORE ================= */
+        const state = {
+            currentRole: 'student',
+            activeStepIndex: 0,
+            activeMentorTab: 'queue',
+            
+            // Steps definition for course
+            steps: [
+                {
+                    id: 'step_1',
+                    type: 'theory',
+                    title: '1. Введение в алгоритмы',
+                    subtitle: 'Что такое алгоритм и исполнитель?',
+                    scoreValue: 20,
+                    completed: true,
+                    content: {
+                        text: `
+                            <p class="text-sm text-slate-700 leading-relaxed"><strong>Алгоритм</strong> — это точная последовательность команд, определяющая процесс перехода от исходных данных к искомому результату.</p>
+                            <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl my-3 text-xs text-blue-900">
+                                <strong>Важное правило:</strong> Исполнитель (компьютер, робот, персонаж) умеет выполнять только тот набор команд, который заложен в его систему команд.
+                            </div>
+                            <p class="text-sm text-slate-700">Посмотрите короткую схему разветвляющегося алгоритма ниже:</p>
+                            <div class="my-4 p-4 bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl">
+                                [Начало] ➔ [Задать вопрос: "Есть препятствие?"] <br>
+                                ├── Если ДА ➔ [Повернуть направо] <br>
+                                └── Если НЕТ ➔ [Сделать шаг вперед]
+                            </div>
+                        `
+                    }
+                },
+                {
+                    id: 'step_2',
+                    type: 'quiz',
+                    title: '2. Проверка знаний',
+                    subtitle: 'Контрольный вопрос на понятливость',
+                    scoreValue: 30,
+                    completed: true,
+                    content: {
+                        question: 'Какое из следующих утверждений верное для понятий "Алгоритм" и "Программа"?',
+                        options: [
+                            'Алгоритм — это всегда код на языке Python.',
+                            'Алгоритм — это понятная последовательность действий, а программа — его запись на языке программирования.',
+                            'Компьютер сам придумывает алгоритмы без участия человека.'
+                        ],
+                        correctIndex: 1
+                    }
+                },
+                {
+                    id: 'step_3',
+                    type: 'scratch',
+                    title: '3. Блочное программирование (Scratch)',
+                    subtitle: 'Соберите алгоритм движения робота-квадрата',
+                    scoreValue: 80,
+                    completed: true,
+                    content: {
+                        instructions: 'Перетащите или добавьте блоки, чтобы робот прошел по периметру (4 раза: Вперед 10, Поворот 90°):'
+                    }
+                },
+                {
+                    id: 'step_4',
+                    type: 'minecraft',
+                    title: '4. Minecraft Education',
+                    subtitle: 'Задание: Постройка защитной стены черепашкой',
+                    scoreValue: 100,
+                    completed: true,
+                    content: {
+                        instructions: 'Заграммируйте Агента построить стену высотой 3 блока и длиной 5 блоков.'
+                    }
+                },
+                {
+                    id: 'step_5',
+                    type: 'algo',
+                    title: '5. Алгоритмика (Python/JS)',
+                    subtitle: 'Задача: Поиск максимального числа из двух',
+                    scoreValue: 100,
+                    completed: false,
+                    content: {
+                        taskDesc: 'Напишите функцию `getMax(a, b)`, которая возвращает большее из двух чисел.',
+                        initialCode: 'function getMax(a, b) {\n  // Ваш код здесь\n  if (a > b) {\n    return a;\n  }\n  return b;\n}',
+                        testCases: [
+                            { input: 'getMax(5, 10)', expected: '10' },
+                            { input: 'getMax(42, 7)', expected: '42' },
+                            { input: 'getMax(-3, -1)', expected: '-1' }
+                        ]
+                    }
+                },
+                {
+                    id: 'step_6',
+                    type: 'project',
+                    title: '6. Итоговый проект',
+                    subtitle: 'Ручная проверка куратором',
+                    scoreValue: 150,
+                    completed: false,
+                    content: {
+                        instructions: 'Разработайте собственную мини-игру в Scratch или собственный алгоритм в Minecraft. Загрузите файл или ссылку на результат.',
+                        status: 'pending' // pending, accepted, returned
+                    }
+                }
+            ],
+
+            // Student Submissions Log
+            submissions: [
+                { stepTitle: '1. Введение в алгоритмы', type: 'Авто-проверка', date: '25 сен, 10:15', status: 'Принято', score: 20, comment: 'Пройдено' },
+                { stepTitle: '2. Проверка знаний', type: 'Авто-проверка', date: '25 сен, 10:20', status: 'Принято', score: 30, comment: 'Верный ответ с 1-й попытки' },
+                { stepTitle: '3. Блочный Scratch', type: 'Авто-проверка', date: '25 сен, 11:00', status: 'Принято', score: 80, comment: 'Алгоритм пройден успешно' },
+                { stepTitle: '4. Minecraft Education', type: 'Авто-проверка', date: '25 сен, 12:30', status: 'Принято', score: 100, comment: 'Строительство завершено' },
+                { stepTitle: '6. Итоговый проект', type: 'Ручная проверка', date: '25 сен, 14:10', status: 'На проверке', score: 0, comment: 'Ожидает куратора' }
+            ],
+
+            // Queue for Mentor Manual Review
+            mentorQueue: [
+                {
+                    id: 'sub_101',
+                    studentName: 'Максим Иванов',
+                    classGrade: '5 класс',
+                    stepTitle: '6. Итоговый проект',
+                    submissionType: 'Ссылка на проект Scratch',
+                    contentLink: 'https://scratch.mit.edu/projects/demo-123',
+                    comment: 'Сделал лабиринт с котиком!',
+                    submittedAt: 'Сегодня, 14:10'
+                },
+                {
+                    id: 'sub_102',
+                    studentName: 'Ольга Смирнова',
+                    classGrade: '4 класс',
+                    stepTitle: '6. Итоговый проект',
+                    submissionType: 'Текстовый отчёт / Код',
+                    contentLink: 'https://github.com/demo/project',
+                    comment: 'Построила замок в Minecraft.',
+                    submittedAt: 'Вчера, 18:45'
+                }
+            ],
+
+            // Students Monitoring Dataset with Early Warning Flags
+            studentsList: [
+                { name: 'Максим Иванов', classGrade: '5 класс', currentStep: '5. Алгоритмика', progressPct: 66, score: 230, status: 'ok', warningText: 'Активен' },
+                { name: 'Сергей Сидоров', classGrade: '5 класс', currentStep: '3. Scratch', progressPct: 33, score: 50, status: 'warning', warningText: '3 ошибки на шаге 3' },
+                { name: 'Елена Кузнецова', classGrade: '6 класс', currentStep: '2. Тест', progressPct: 16, score: 20, status: 'danger', warningText: 'Не заходил 4 дня!' },
+                { name: 'Анна Васильева', classGrade: '5 класс', currentStep: '6. Проект', progressPct: 83, score: 310, status: 'ok', warningText: 'Активен' }
+            ]
+        };
+
+        // Switch between Student / Mentor / Admin views
+        function switchRole(role) {
+            state.currentRole = role;
+            
+            // Update button styles
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.className = 'role-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5';
+            });
+            const activeBtn = document.getElementById(`role-btn-${role}`);
+            if (activeBtn) {
+                activeBtn.className = 'role-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1.5 bg-white text-blue-700 shadow-sm border border-slate-200 font-semibold';
+            }
+
+            // Hide/Show Role Views
+            document.querySelectorAll('.role-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById(`view-${role}`).classList.remove('hidden');
+
+            // Refresh specific view renders
+            if (role === 'student') renderStudentView();
+            if (role === 'mentor') renderMentorView();
+            if (role === 'admin') renderAdminView();
+        }
+
+        // Switch tabs inside Mentor dashboard
+        function switchMentorTab(tabKey) {
+            state.activeMentorTab = tabKey;
+            ['queue', 'students', 'questions'].forEach(t => {
+                document.getElementById(`mtab-${t}`).classList.add('hidden');
+                document.getElementById(`mtab-btn-${t}`).className = 'pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2';
+            });
+            document.getElementById(`mtab-${tabKey}`).classList.remove('hidden');
+            document.getElementById(`mtab-btn-${tabKey}`).className = 'pb-3 text-sm font-bold border-b-2 border-blue-600 text-blue-600 flex items-center gap-2';
+        }
+
+        // Render Steps sidebar and current active step
+        function renderStudentView() {
+            // Render Steps Navigation
+            const listContainer = document.getElementById('steps-list-container');
+            listContainer.innerHTML = '';
+
+            state.steps.forEach((step, idx) => {
+                const isActive = idx === state.activeStepIndex;
+                const item = document.createElement('button');
+                item.onclick = () => { state.activeStepIndex = idx; renderStudentView(); };
+                
+                let iconClass = 'fa-regular fa-circle text-slate-300';
+                if (step.completed) iconClass = 'fa-solid fa-circle-check text-emerald-500';
+
+                item.className = `w-full text-left p-3 rounded-xl text-xs font-medium transition flex items-center justify-between ${
+                    isActive ? 'bg-blue-50 border border-blue-200 text-blue-900 font-bold' : 'hover:bg-slate-50 text-slate-700'
+                }`;
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <i class="${iconClass} text-sm flex-shrink-0"></i>
+                        <span class="truncate">${step.title}</span>
+                    </div>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded ${isActive ? 'bg-blue-200 text-blue-800' : 'bg-slate-100 text-slate-500'} font-semibold">
+                        +${step.scoreValue} б.
+                    </span>
+                `;
+                listContainer.appendChild(item);
+            });
+
+            // Update Progress Counts
+            const completedCount = state.steps.filter(s => s.completed).length;
+            document.getElementById('student-progress-count').innerText = `${completedCount} / ${state.steps.length}`;
+
+            // Render Current Active Step Content
+            const step = state.steps[state.activeStepIndex];
+            const contentArea = document.getElementById('step-content-area');
+            
+            let html = `
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+                        <span>${getStepTypeName(step.type)}</span>
+                        <span>•</span>
+                        <span>+${step.scoreValue} Баллов</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900">${step.title}</h2>
+                    <p class="text-xs text-slate-500 mt-1">${step.subtitle}</p>
+                </div>
+            `;
+
+            // Step Content Renderer per Type
+            if (step.type === 'theory') {
+                html += `
+                    <div class="prose prose-slate max-w-none pt-2">
+                        ${step.content.text}
+                    </div>
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+                        <span>Изучите материал выше и нажмите "Далее" для прохождения.</span>
+                    </div>
+                `;
+            } else if (step.type === 'quiz') {
+                html += `
+                    <div class="space-y-4 pt-2">
+                        <p class="font-semibold text-slate-800 text-sm">${step.content.question}</p>
+                        <div class="space-y-2">
+                            ${step.content.options.map((opt, i) => `
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 cursor-pointer transition text-xs text-slate-700">
+                                    <input type="radio" name="quiz_opt" value="${i}" ${i===step.content.correctIndex ? 'checked' : ''} class="mt-0.5 text-blue-600">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        <button onclick="checkQuizAnswer()" class="px-4 py-2 bg-slate-900 text-white font-semibold text-xs rounded-xl hover:bg-slate-800">
+                            Проверить ответ
+                        </button>
+                    </div>
+                `;
+            } else if (step.type === 'scratch') {
+                html += `
+                    <!-- Interactive Scratch Simulation -->
+                    <div class="space-y-3 pt-2">
+                        <p class="text-xs text-slate-600">${step.content.instructions}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-100 p-3 rounded-2xl border border-slate-200">
+                            <div class="bg-white p-3 rounded-xl space-y-2 shadow-sm">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Палитра блоков</span>
+                                <div class="bg-amber-500 text-white text-xs font-bold p-2 rounded-lg cursor-pointer block-scratch" onclick="addScratchBlock('Повторить 4 раза')">
+                                    <i class="fa-solid fa-rotate-right mr-1"></i> Повторить 4 раза
+                                </div>
+                                <div class="bg-blue-500 text-white text-xs font-bold p-2 rounded-lg cursor-pointer block-scratch" onclick="addScratchBlock('Шаг 10 пикселей')">
+                                    <i class="fa-solid fa-arrow-up mr-1"></i> Шаг 10 пикселей
+                                </div>
+                                <div class="bg-indigo-500 text-white text-xs font-bold p-2 rounded-lg cursor-pointer block-scratch" onclick="addScratchBlock('Повернуть на 90°')">
+                                    <i class="fa-solid fa-turn-right mr-1"></i> Повернуть на 90°
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 bg-slate-800 rounded-xl p-3 text-white flex flex-col justify-between min-h-[220px]">
+                                <div>
+                                    <div class="flex items-center justify-between text-xs border-b border-slate-700 pb-2 mb-2">
+                                        <span class="text-slate-400 font-mono">Рабочая область Scratch</span>
+                                        <button onclick="clearScratchBlocks()" class="text-[10px] text-rose-400 hover:underline">Очистить</button>
+                                    </div>
+                                    <div id="scratch-workspace" class="space-y-1.5">
+                                        <div class="bg-emerald-600 text-white text-xs font-bold p-2 rounded-lg">Когда нажат 🏁</div>
+                                        <div class="bg-amber-500 text-white text-xs font-bold p-2 rounded-lg ml-2">Повторить 4 раза:</div>
+                                        <div class="bg-blue-500 text-white text-xs font-bold p-1.5 rounded-lg ml-6 text-[11px]">├─ Шаг 10 пикселей</div>
+                                        <div class="bg-indigo-500 text-white text-xs font-bold p-1.5 rounded-lg ml-6 text-[11px]">└─ Повернуть на 90°</div>
+                                    </div>
+                                </div>
+                                <button onclick="runScratchSim()" class="w-full mt-3 py-2 bg-emerald-500 hover:bg-emerald-600 font-bold text-xs rounded-lg text-white flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-play"></i> Запустить алгоритм
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (step.type === 'minecraft') {
+                html += `
+                    <!-- Interactive Minecraft Simulation -->
+                    <div class="space-y-3 pt-2">
+                        <p class="text-xs text-slate-600">${step.content.instructions}</p>
+                        <div class="bg-slate-900 text-white p-4 rounded-2xl relative overflow-hidden border border-slate-800">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                                <span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-cube mr-1"></i> Minecraft Education Agent Builder</span>
+                                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">Мир: ЧувашияСпорт_01</span>
+                            </div>
+
+                            <!-- Sim Screen -->
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs space-y-2">
+                                <div class="text-slate-400">// Код Агента (Minecraft MakeCode):</div>
+                                <div class="text-blue-300">agent.setItem(BLOCK_STONE, 64, 1);</div>
+                                <div class="text-purple-300">for (let y = 0; y < 3; y++) {</div>
+                                <div class="text-emerald-300 pl-4">agent.place(DOWN);</div>
+                                <div class="text-emerald-300 pl-4">agent.move(FORWARD, 5);</div>
+                                <div class="text-purple-300">}</div>
+                            </div>
+
+                            <button onclick="runMinecraftSim()" class="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center gap-2">
+                                <i class="fa-solid fa-hammer"></i> Построить в симуляторе Minecraft
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (step.type === 'algo') {
+                html += `
+                    <!-- Interactive Code Tester -->
+                    <div class="space-y-3 pt-2">
+                        <p class="text-xs text-slate-700 font-medium">${step.content.taskDesc}</p>
+                        
+                        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-3">
+                            <div class="flex items-center justify-between text-xs text-slate-400 pb-2 mb-2 border-b border-slate-800">
+                                <span>Редактор кода (JavaScript / Python)</span>
+                                <span class="text-emerald-400 text-[10px]"><i class="fa-solid fa-shield-halved"></i> Автопрогон тестами</span>
+                            </div>
+                            <textarea id="algo-code-input" class="w-full h-32 bg-transparent text-emerald-400 font-mono text-xs focus:outline-none resize-none">${step.content.initialCode}</textarea>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button onclick="runAlgoTests()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl flex items-center gap-2">
+                                <i class="fa-solid fa-vial"></i> Запустить тесты
+                            </button>
+                        </div>
+
+                        <div id="algo-test-results" class="hidden p-3 rounded-xl text-xs font-mono"></div>
+                    </div>
+                `;
+            } else if (step.type === 'project') {
+                html += `
+                    <!-- Manual Submission Upload -->
+                    <div class="space-y-4 pt-2">
+                        <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+                            <strong class="block text-amber-800"><i class="fa-solid fa-user-check"></i> Задание с ручной проверкой куратором</strong>
+                            <p>${step.content.instructions}</p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-semibold text-slate-700">Ссылка на проект или файл (Scratch / GitHub / Диск):</label>
+                            <input id="project-link-input" type="text" placeholder="https://scratch.mit.edu/projects/..." class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-semibold text-slate-700">Комментарий для куратора:</label>
+                            <textarea id="project-comment-input" rows="2" placeholder="Опишите, что сделано в вашей работе..." class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                        </div>
+
+                        <button onclick="submitProjectForReview()" class="px-5 py-2.5 bg-blue-600 text-white font-bold text-xs rounded-xl hover:bg-blue-700 shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Отправить куратору на проверку
+                        </button>
+                    </div>
+                `;
+            }
+
+            contentArea.innerHTML = html;
+
+            // Nav buttons status
+            document.getElementById('btn-prev-step').disabled = (state.activeStepIndex === 0);
+            document.getElementById('btn-next-step').disabled = (state.activeStepIndex === state.steps.length - 1);
+            
+            const badge = document.getElementById('step-status-badge');
+            if (step.completed) {
+                badge.className = 'text-xs px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold';
+                badge.innerText = 'Пройдено (+баллы)';
+            } else {
+                badge.className = 'text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold';
+                badge.innerText = 'В процессе';
+            }
+
+            // Render Submissions Log
+            renderSubmissionsTable();
+        }
+
+        function getStepTypeName(type) {
+            const map = {
+                'theory': 'Теория',
+                'quiz': 'Контрольный вопрос',
+                'scratch': 'Scratch (Блочный)',
+                'minecraft': 'Minecraft Education',
+                'algo': 'Алгоритмика / Тесты',
+                'project': 'Проект (Ручная)'
+            };
+            return map[type] || 'Шаг';
+        }
+
+        function navigateStep(direction) {
+            const newIdx = state.activeStepIndex + direction;
+            if (newIdx >= 0 && newIdx < state.steps.length) {
+                state.activeStepIndex = newIdx;
+                renderStudentView();
+            }
+        }
+
+        function checkQuizAnswer() {
+            const current = state.steps[state.activeStepIndex];
+            current.completed = true;
+            alert('Правильный ответ! +30 баллов добавлено в ваш рейтинг.');
+            renderStudentView();
+        }
+
+        function addScratchBlock(text) {
+            const ws = document.getElementById('scratch-workspace');
+            const div = document.createElement('div');
+            div.className = 'bg-blue-500 text-white text-xs font-bold p-1.5 rounded-lg ml-6 text-[11px] animate-pulse';
+            div.innerText = `├─ ${text}`;
+            ws.appendChild(div);
+        }
+
+        function clearScratchBlocks() {
+            renderStudentView();
+        }
+
+        function runScratchSim() {
+            const current = state.steps[state.activeStepIndex];
+            current.completed = true;
+            alert('Симуляция Scratch запущена! Котёнок успешно прошёл маршрут. Задание выполнено!');
+            renderStudentView();
+        }
+
+        function runMinecraftSim() {
+            const current = state.steps[state.activeStepIndex];
+            current.completed = true;
+            alert('Агент Minecraft построили замок в симуляторе! Задание засчитано.');
+            renderStudentView();
+        }
+
+        function runAlgoTests() {
+            const current = state.steps[state.activeStepIndex];
+            const resultsDiv = document.getElementById('algo-test-results');
+            resultsDiv.classList.remove('hidden');
+            
+            resultsDiv.className = 'p-3 rounded-xl text-xs font-mono bg-emerald-950 text-emerald-400 border border-emerald-800 space-y-1';
+            resultsDiv.innerHTML = `
+                <div>✔ Тест 1: getMax(5, 10) ➔ 10 (ПРОЙДЕНО)</div>
+                <div>✔ Тест 2: getMax(42, 7) ➔ 42 (ПРОЙДЕНО)</div>
+                <div>✔ Тест 3: getMax(-3, -1) ➔ -1 (ПРОЙДЕНО)</div>
+                <div class="font-bold text-white pt-1">Все 3 теста успешно пройдены! (+100 баллов)</div>
+            `;
+            
+            current.completed = true;
+            setTimeout(() => { renderStudentView(); }, 1000);
+        }
+
+        function submitProjectForReview() {
+            const link = document.getElementById('project-link-input').value;
+            if (!link) {
+                alert('Пожалуйста, укажите ссылку на вашу работу.');
+                return;
+            }
+
+            // Add to student submissions log
+            state.submissions.unshift({
+                stepTitle: '6. Итоговый проект',
+                type: 'Ручная проверка',
+                date: 'Только что',
+                status: 'На проверке',
+                score: 0,
+                comment: 'Отправлено куратору'
+            });
+
+            // Add to mentor queue
+            state.mentorQueue.unshift({
+                id: 'sub_' + Date.now(),
+                studentName: 'Максим Иванов',
+                classGrade: '5 класс',
+                stepTitle: '6. Итоговый проект',
+                submissionType: 'Проект по ссылке',
+                contentLink: link,
+                comment: document.getElementById('project-comment-input').value || 'Завершил проект',
+                submittedAt: 'Только что'
+            });
+
+            alert('Работа успешно отправлена на ручную проверку куратору!');
+            renderStudentView();
+        }
+
+        function renderSubmissionsTable() {
+            const tbody = document.getElementById('student-submissions-table');
+            tbody.innerHTML = state.submissions.map(s => {
+                let statusBadge = '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">На проверке</span>';
+                if (s.status === 'Принято') statusBadge = '<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Принято</span>';
+                if (s.status === 'На доработке') statusBadge = '<span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">На доработке</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50/80">
+                        <td class="p-3 font-semibold text-slate-800 text-xs">${s.stepTitle}</td>
+                        <td class="p-3 text-slate-500 text-xs">${s.type}</td>
+                        <td class="p-3 text-slate-400 text-xs">${s.date}</td>
+                        <td class="p-3">${statusBadge}</td>
+                        <td class="p-3 text-xs text-slate-600">${s.comment}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderMentorView() {
+            // Render Queue
+            const queueList = document.getElementById('mentor-queue-list');
+            document.getElementById('mentor-pending-count').innerText = state.mentorQueue.length;
+            document.getElementById('queue-count-badge').innerText = state.mentorQueue.length;
+            document.getElementById('mentor-pending-badge').innerText = state.mentorQueue.length;
+
+            if (state.mentorQueue.length === 0) {
+                queueList.innerHTML = `<div class="text-xs text-slate-400 p-4 text-center">Все работы проверены!</div>`;
+            } else {
+                queueList.innerHTML = state.mentorQueue.map((item, idx) => `
+                    <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                                    ${item.studentName.charAt(0)}
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xs text-slate-900">${item.studentName} <span class="text-slate-400 font-normal">(${item.classGrade})</span></div>
+                                    <div class="text-[10px] text-slate-500">${item.stepTitle} • ${item.submittedAt}</div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">${item.submissionType}</span>
+                        </div>
+
+                        <div class="p-3 bg-white rounded-xl border border-slate-200 text-xs text-slate-700">
+                            <strong>Ссылка / Ответ:</strong> <a href="${item.contentLink}" target="_blank" class="text-blue-600 underline">${item.contentLink}</a>
+                            <p class="mt-1 text-slate-500">"${item.comment}"</p>
+                        </div>
+
+                        <div class="flex items-center gap-2 pt-1">
+                            <button onclick="approveSubmission(${idx})" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-check"></i> Принять (+150 б.)
+                            </button>
+                            <button onclick="rejectSubmission(${idx})" class="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 font-semibold text-xs rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left"></i> Вернуть с комментарием
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Render Students Monitoring
+            const studentsTable = document.getElementById('mentor-students-table');
+            studentsTable.innerHTML = state.studentsList.map(st => {
+                let badge = '<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-bold">ОК</span>';
+                if (st.status === 'warning') badge = '<span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Отстаёт</span>';
+                if (st.status === 'danger') badge = '<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded font-bold animate-pulse"><i class="fa-solid fa-circle-exclamation"></i> Риск ухода</span>';
+
+                return `
+                    <tr class="hover:bg-slate-50/80">
+                        <td class="p-3 font-semibold text-xs text-slate-900">${st.name}</td>
+                        <td class="p-3 text-xs text-slate-500">${st.classGrade}</td>
+                        <td class="p-3 text-xs text-slate-700">${st.currentStep}</td>
+                        <td class="p-3 text-xs">
+                            <div class="w-24 bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-blue-600 h-full" style="width: ${st.progressPct}%"></div>
+                            </div>
+                        </td>
+                        <td class="p-3 text-xs font-bold text-amber-600">${st.score} б.</td>
+                        <td class="p-3 text-xs">${badge} <span class="text-[10px] text-slate-500 ml-1">${st.warningText}</span></td>
+                        <td class="p-3">
+                            <button onclick="alert('Чат с учеником ${st.name} открыт')" class="text-xs text-blue-600 hover:underline font-semibold">Написать</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Render Q&A
+            const qaList = document.getElementById('mentor-qa-list');
+            qaList.innerHTML = `
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <div class="flex justify-between font-bold text-slate-800">
+                        <span>Максим Иванов (Шаг 5. Алгоритмика)</span>
+                        <span class="text-[10px] text-slate-400">10 мин назад</span>
+                    </div>
+                    <p class="text-slate-600">"Не могу понять, почему второй тест выдаёт отрицательное число?"</p>
+                    <button onclick="alert('Ответ отправлен!')" class="mt-2 text-[10px] text-blue-600 font-bold hover:underline">Ответить ученику</button>
+                </div>
+            `;
+        }
+
+        function approveSubmission(idx) {
+            state.mentorQueue.splice(idx, 1);
+            alert('Работа принята! Ученику начислены баллы.');
+            renderMentorView();
+        }
+
+        function rejectSubmission(idx) {
+            const comment = prompt('Укажите причину возврата работы на доработку:', 'Необходимо доработать условие задачи.');
+            if (comment) {
+                state.mentorQueue.splice(idx, 1);
+                alert('Работа возвращена ученику на доработку.');
+                renderMentorView();
+            }
+        }
+
+        function renderAdminView() {
+            const stepsList = document.getElementById('admin-steps-list');
+            stepsList.innerHTML = state.steps.map((st, i) => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-slate-400 font-bold">#${i+1}</span>
+                        <div>
+                            <div class="font-bold text-slate-800">${st.title}</div>
+                            <div class="text-[10px] text-slate-500">Тип: ${getStepTypeName(st.type)}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-blue-100 text-blue-800 text-[10px] px-2 py-0.5 rounded font-bold">+${st.scoreValue} б.</span>
+                        <button onclick="alert('Редактирование типа шага: ${st.title}')" class="text-slate-400 hover:text-slate-700 text-xs p-1">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function createNewStepModal() {
+            const title = prompt('Введите название нового шага:', '7. Вложенные циклы Scratch');
+            if (title) {
+                state.steps.push({
+                    id: 'step_' + Date.now(),
+                    type: 'scratch',
+                    title: title,
+                    subtitle: 'Расширяемый шаг курса',
+                    scoreValue: 50,
+                    completed: false,
+                    content: { instructions: 'Задание нового шага.' }
+                });
+                renderAdminView();
+                alert('Новый шаг добавлен в структуру курса!');
+            }
+        }
+
+        function toggleRatingModal() {
+            const modal = document.getElementById('modal-rating');
+            modal.classList.toggle('hidden');
+
+            const list = document.getElementById('rating-breakdown-list');
+            let total = 0;
+            list.innerHTML = state.steps.map(s => {
+                const earned = s.completed ? s.scoreValue : 0;
+                total += earned;
+                return `
+                    <div class="flex justify-between items-center p-2 rounded ${s.completed ? 'bg-emerald-50 text-emerald-900' : 'bg-slate-50 text-slate-500'}">
+                        <span>${s.title} (${getStepTypeName(s.type)})</span>
+                        <span class="font-bold">${earned} / ${s.scoreValue} б.</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('student-score-total').innerText = `${total} баллов`;
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderStudentView();
+        };
+    </script>
+</body>
+</html>
