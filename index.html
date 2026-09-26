@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1220">
+  <meta name="description" content="КодФормула — образовательная платформа по программированию для школьников.">
+  <title>КодФормула — программирование шаг за шагом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="public-site">
+    <header class="public-header">
+      <div class="public-header-inner">
+        <a class="brand-button" href="index.html" aria-label="КодФормула — главная">
+          <span class="logo">Код<b>Формула</b></span>
+        </a>
+
+        <nav class="public-nav" aria-label="Основная навигация">
+          <a href="#courses">Курсы</a>
+          <a href="#how">Как учимся</a>
+          <a href="#platform">Платформа</a>
+        </nav>
+
+        <div class="public-actions">
+          <a class="btn secondary" href="login.html">Войти</a>
+          <a class="btn" href="login.html?from=training">Начать обучение</a>
+        </div>
+
+        <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="mobile-public-nav" onclick="toggleMobileMenu()">
+          ☰
+        </button>
+      </div>
+
+      <nav id="mobile-public-nav" class="public-nav mobile-public-nav" aria-label="Мобильная навигация" hidden>
+        <a href="#courses" onclick="closeMobileMenu()">Курсы</a>
+        <a href="#how" onclick="closeMobileMenu()">Как учимся</a>
+        <a href="#platform" onclick="closeMobileMenu()">Платформа</a>
+        <a class="mobile-login" href="login.html">Войти</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="public-hero">
+        <div class="public-hero-inner">
+          <div class="public-hero-copy">
+            <div class="public-kicker"><span></span> ОНЛАЙН-ПЛАТФОРМА ПО ПРОГРАММИРОВАНИЮ</div>
+            <h1>Учимся программировать.<br><em>Создаём и проверяем.</em></h1>
+            <p>КодФормула помогает школьникам пройти путь от первых блоков до решения задач на Python — маленькими, понятными шагами.</p>
+            <div class="public-hero-actions">
+              <a class="btn" href="login.html?from=training">Начать обучение <span>→</span></a>
+              <a class="public-text-link" href="#courses">Посмотреть курсы</a>
+            </div>
+            <div class="public-trust">
+              <div><strong>3</strong><span>курса</span></div>
+              <div><strong>9</strong><span>модулей</span></div>
+              <div><strong>30</strong><span>шагов</span></div>
+              <div><strong>3</strong><span>роли</span></div>
+            </div>
+          </div>
+
+          <div class="public-hero-visual" aria-hidden="true">
+            <div class="code-window">
+              <div class="window-bar"><i></i><i></i><i></i><span>lesson.py</span></div>
+              <div class="code-lines">
+                <span><b>01</b> <mark>for</mark> i <mark>in</mark> range(<strong>5</strong>):</span>
+                <span><b>02</b> &nbsp;&nbsp;print(<u>"Привет, код!"</u>)</span>
+                <span><b>03</b></span>
+                <span><b>04</b> <mark>if</mark> score &gt;= <strong>10</strong>:</span>
+                <span><b>05</b> &nbsp;&nbsp;print(<u>"Готово ✓"</u>)</span>
+              </div>
+              <div class="code-result"><span class="result-dot"></span> Автопроверка пройдена <b>+10</b></div>
+            </div>
+            <div class="floating-card float-progress">
+              <span class="float-icon">✓</span>
+              <div><b>Шаг зачтён</b><small>Прогресс сохранён</small></div>
+            </div>
+            <div class="floating-card float-course">
+              <span class="float-icon blue">Py</span>
+              <div><b>Python 3</b><small>Первые задачи</small></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="public-section" id="courses">
+        <div class="public-section-head">
+          <div>
+            <div class="eyebrow">Курсы</div>
+            <h2>Три маршрута — один путь</h2>
+          </div>
+          <p>Каждый курс разбит на модули и небольшие шаги. Практика и проверка встроены прямо в обучение.</p>
+        </div>
+
+        <div class="public-course-grid">
+          <article class="public-course-card">
+            <div class="public-course-icon c1">S</div>
+            <div class="eyebrow">2–4 класс · Scratch 3</div>
+            <h3>Первые программы в Scratch</h3>
+            <p>Последовательность, циклы, события и условия. Первые программы из блоков и проект «Поймай яблоко».</p>
+            <div class="public-course-bottom">
+              <span>3 модуля · 10 шагов</span>
+              <a class="course-arrow" href="login.html?from=course-1" aria-label="Открыть курс">→</a>
+            </div>
+          </article>
+
+          <article class="public-course-card">
+            <div class="public-course-icon c2">M</div>
+            <div class="eyebrow">3–6 класс · Minecraft Education</div>
+            <h3>Minecraft Education: программируем агента</h3>
+            <p>Управление агентом, вложенные циклы и инженерные задачи в мире Minecraft Education.</p>
+            <div class="public-course-bottom">
+              <span>3 модуля · 8 шагов</span>
+              <a class="course-arrow" href="login.html?from=course-2" aria-label="Открыть курс">→</a>
+            </div>
+          </article>
+
+          <article class="public-course-card">
+            <div class="public-course-icon c3">Py</div>
+            <div class="eyebrow">5–9 класс · Python 3</div>
+            <h3>Алгоритмика: первые задачи на Python</h3>
+            <p>Ввод и вывод, условия, логические операции, циклы и первые олимпиадные задачи.</p>
+            <div class="public-course-bottom">
+              <span>3 модуля · 12 шагов</span>
+              <a class="course-arrow" href="login.html?from=course-3" aria-label="Открыть курс">→</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="public-section how-section" id="how">
+        <div class="public-section-head">
+          <div>
+            <div class="eyebrow">Как это работает</div>
+            <h2>Не просто смотрим — делаем</h2>
+          </div>
+          <p>Минимальная единица обучения — шаг. После него система сохраняет результат и показывает, что делать дальше.</p>
+        </div>
+
+        <div class="how-grid">
+          <article class="how-card"><span class="how-number">01</span><div class="how-icon">◎</div><h3>Изучаем</h3><p>Короткая теория и разбор примеров перед практикой.</p></article>
+          <article class="how-card"><span class="how-number">02</span><div class="how-icon">⌘</div><h3>Пробуем</h3><p>Решаем задачу, пишем код или собираем программу из блоков.</p></article>
+          <article class="how-card"><span class="how-number">03</span><div class="how-icon">✓</div><h3>Проверяем</h3><p>Получаем автоматический результат или обратную связь куратора.</p></article>
+          <article class="how-card"><span class="how-number">04</span><div class="how-icon">↗</div><h3>Двигаемся дальше</h3><p>Прогресс сохраняется, а следующий шаг всегда виден.</p></article>
+        </div>
+      </section>
+
+      <section class="public-section platform-section" id="platform">
+        <div class="platform-panel">
+          <div class="platform-copy">
+            <div class="eyebrow light">Платформа</div>
+            <h2>Три контура в одной системе</h2>
+            <p>Ученик проходит курс и отправляет работы. Куратор проверяет ручные задания и следит за прогрессом. Администратор управляет курсами, пользователями и назначениями.</p>
+            <a class="btn light-btn" href="login.html">Войти на платформу →</a>
+          </div>
+          <div class="platform-role-list">
+            <div><span>01</span><b>Ученик</b><small>Курсы · шаги · прогресс · обратная связь</small></div>
+            <div><span>02</span><b>Куратор</b><small>Проверка работ · ученики · сигналы</small></div>
+            <div><span>03</span><b>Администратор</b><small>Курсы · пользователи · назначения</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="public-cta">
+        <div>
+          <div class="eyebrow light">КодФормула</div>
+          <h2>Первый шаг уже можно сделать</h2>
+          <p>Вход открывает нужный контур платформы. Для демонстрации доступны три роли.</p>
+        </div>
+        <a class="btn light-btn" href="login.html?from=training">Перейти ко входу <span>→</span></a>
+      </section>
+    </main>
+
+    <footer class="public-footer">
+      <div>
+        <a class="logo dark" href="index.html">Код<b>Формула</b></a>
+        <p>Образовательная платформа по программированию.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#courses">Курсы</a>
+        <a href="#how">Как учимся</a>
+        <a href="#platform">Платформа</a>
+        <a href="login.html">Войти</a>
+      </div>
+      <span>© 2026 КодФормула</span>
+    </footer>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-public-nav");
+      const button = document.querySelector(".mobile-menu");
+      if (!menu || !button) return;
+      const willOpen = menu.hidden;
+      menu.hidden = !willOpen;
+      button.setAttribute("aria-expanded", String(willOpen));
+    }
+
+    function closeMobileMenu() {
+      const menu = document.getElementById("mobile-public-nav");
+      const button = document.querySelector(".mobile-menu");
+      if (!menu || !button) return;
+      menu.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+    }
+  </script>
+</body>
+</html>

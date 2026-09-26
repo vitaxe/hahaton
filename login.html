@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1220">
+  <title>Вход — КодФормула</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="auth-body">
+  <div class="app-root auth-page">
+    <section class="auth-aside">
+      <div>
+        <a class="brand-button" href="index.html">
+          <span class="logo">Код<b>Формула</b></span>
+        </a>
+
+        <h1>
+          Программирование<br>
+          <span>шаг за шагом.</span>
+        </h1>
+
+        <p>
+          После входа система открывает интерфейс в соответствии с ролью:
+          ученика, куратора или администратора.
+        </p>
+
+        <div class="auth-feature-list">
+          <div>
+            <i>✓</i>
+            <span>30 учебных шагов из образовательного пакета</span>
+          </div>
+          <div>
+            <i>✓</i>
+            <span>Автоматическая и ручная проверка</span>
+          </div>
+          <div>
+            <i>✓</i>
+            <span>Прогресс и обратная связь</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-aside-footer">
+        2026
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="auth-card">
+        <a class="auth-back" href="index.html">← На главную</a>
+
+        <div class="eyebrow">Авторизация</div>
+        <h1>Войти</h1>
+        <p class="muted" id="login-context">
+          Введите данные аккаунта.
+        </p>
+
+        <form id="login-form">
+          <div class="form-field">
+            <label for="login-input">Логин</label>
+            <input
+              id="login-input"
+              name="login"
+              autocomplete="username"
+              placeholder="Например: masha"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="password-input">Пароль</label>
+            <input
+              id="password-input"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Пароль"
+              required
+            >
+          </div>
+
+          <button class="btn full" type="submit">Войти</button>
+
+          <div id="auth-error" class="auth-error" hidden>
+            Неверный логин или пароль.
+          </div>
+        </form>
+
+        <div class="demo-login">
+          <p>Быстрый вход для демонстрации:</p>
+
+          <div class="demo-login-grid">
+            <button type="button" data-demo-role="student">
+              <b>Ученик</b>
+              <span>masha / 1234</span>
+            </button>
+            <button type="button" data-demo-role="curator">
+              <b>Куратор</b>
+              <span>anna / 1234</span>
+            </button>
+            <button type="button" data-demo-role="admin">
+              <b>Администратор</b>
+              <span>admin / 1234</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-note">
+          Регистрация не предусмотрена исходными требованиями:
+          учетные записи создаются администратором.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>
